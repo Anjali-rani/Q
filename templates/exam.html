@@ -1,0 +1,1940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+
+<style>
+
+.content {
+  padding: 16px;
+}
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.sticky + .content {
+  padding-top: 102px;
+}
+
+    .but{
+  background-color: #106058;
+  border:none;
+  color: white;
+  padding: px px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 0px 0px;
+  cursor: pointer;
+  float:right;
+}
+
+.header {
+  overflow: hidden;
+  background-color: #106058;
+  padding: px px;
+}
+
+.header a {
+  float: left;
+  color: white;
+  text-align: center;
+  padding: px;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 25px;
+  border-radius: 4px;
+
+}
+
+.header a.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+/*.header a:hover {
+  background-color: #ddd;
+  color: black;
+}
+*/
+.header a.active {
+  //background-color: dodgerblue;
+  color: white;
+}
+
+.header-right {
+  float: right;
+}
+
+@media screen and (max-width: 500px) {
+  .header a {
+    float: none;
+    display: block;
+    text-align: left;
+
+  }
+
+  .header-right {
+    float: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+	*					{ margin: 0; padding: 0; }
+
+#page-wrap		    { width: 800px; margin: 0 auto; }
+
+h1                  { margin: 25px 0; font: 14px Georgia, Serif; text-transform: uppercase; letter-spacing: 3px; }
+
+#quiz input {
+    vertical-align: middle;
+}
+
+#quiz ol {
+   margin: 0 0 10px 20px;
+}
+
+#quiz ol li {
+   margin: 0 0 20px 0;
+}
+
+#quiz ol li div {
+   padding: 4px 0;
+}
+
+#quiz h3 {
+   font-size: 17px; margin: 0 0 1px 0; color: #666;
+}
+
+#results {
+    font: 44px Georgia, Serif;
+}
+
+
+
+/* Full-width input fields */
+input[type=text],select{
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+}
+
+
+</style>
+
+  <script type="text/javascript">
+	window.history.forward();
+	function noBack() { window.history.forward(); }
+</script>
+</head>
+<body oncontextmenu="return false;" onload="noBack();"
+	onpageshow="if (event.persisted) noBack();" onunload="">
+
+
+<div class="fuild-container">
+<div class="jumbotron" style="padding:10px; background:#106058;border: white 2px solid;">
+    <center><h2 style="color:white;">FOSLIPY FOUNDATION</h2>   </center>
+    <div class="header">
+  <div class="header-right" style="margin:%; padding:px;">
+    <!--<a href=""><i class="fa fa-home"></i>&nbsp;Home</a>
+    <a href="#about">  <i class="fa fa-user "></i>&nbsp;About Us</a>
+    <a href="#service"> <i class="fa fa-certificate "></i>&nbsp; Services</a>
+	 <a href="#contact"> <i class="fa fa-envelope "></i>&nbsp; Contact Us</a>-->
+	 	 <a href="{% url 'logout' %}"> &nbsp; <button  style="outline:none;" class="but">LOGOUT</button></a>
+  </div>
+ </div>
+</div>
+
+<!--<div class="head" id="myHeader">
+  <h2>My Header</h2>
+  counter
+</div>-->
+
+
+
+
+
+
+
+ <div class="fuild-container" >
+   <div class="jumbotron" style="padding:10px; border:2px white solid;" id="myHeader">
+    <center>
+
+        	<a href="#apti"><button type="button" class="btn btn-success">
+<span style=" font-size: 200%;">Aptitude Section</span></button></a>
+
+
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+&nbsp&nbsp&nbsp&nbsp
+
+	<a href="#tech"><button type="button" class="btn btn-success">
+<span style=" font-size: 200%;">Technical Section</span></button>
+</a>
+
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+&nbsp&nbsp&nbsp&nbsp
+
+
+	<button type="button" class="btn btn-success">
+<div id="quiz-time-left" style=" font-size: 200%;"></div></button>
+
+
+&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+&nbsp&nbsp&nbsp&nbsp
+
+
+
+        <button type="button" class="btn btn-success" onclick="sub();">
+<div style=" font-size: 200%;">SUBMIT TEST</div></button>
+
+	</center>
+
+   </div>
+ </div>
+
+
+
+
+
+
+<div class="container content">
+      <div class="jumbotron" style="padding:10px;">
+    <center><h1></h1></center>
+
+<div id="page-wrap">
+
+
+		<form action="{% url 'score' %}" method="post" id="quiz">
+{% csrf_token %}
+<div id="apti">
+    <label><b>Full Name</b></label>
+            <input type="text" placeholder="Enter Full Name" name="NM" id="sname" required>
+
+  <label><b>College Name</b></label>
+  <select name="CN" id="cole" onfocus="allLetter();">
+      <option selected="" value="Default" >Select College</option>
+      <option value="PVCC">Patkar Varde College, Goregaon</option>
+      <option value="AMCC"> Acharya Marathe College, Chembur</option>
+      <option value="KBPCV">KBP College, Vashi</option>
+	   <option value="BVIMITCB">BVIMIT College, Belapur</option>
+      <option value="TECN"> Terna Engg College, Nerul</option>
+      <option value="RCD">Ruia College, Dadar</option>
+    </select>
+   <label><b>Roll Number</b></label>
+            <input type="text" placeholder="Enter Roll Number" name="RN" id="" required>
+
+
+            <label><b>Contact No.</b></label>
+            <input type="text" placeholder="Enter Mobile Number" name="MN" id="contact" onfocus="colselect();" required>
+            <hr style="border:1px solid white;">
+
+         <center><h1>APPTITUDE TEST</h1></center>
+            <ol>
+
+                <li>
+
+                    <h3>Look at this series: 7, 10, 8, 11, 9, 12, . . . What number should come next?</h3>
+
+                    <div>
+                        <input type="radio" name="question-1-answers" id="question-1-answers-A" value="A" />
+                        <label for="question-1-answers-A">A) 7 </label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-1-answers" id="question-1-answers-B" value="B" />
+                        <label for="question-1-answers-B">B) 10</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-1-answers" id="question-1-answers-C" value="C" />
+                        <label for="question-1-answers-C">C) 12</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-1-answers" id="question-1-answers-D" value="D" />
+                        <label for="question-1-answers-D">D) 13</label>
+                    </div>
+
+                </li>
+
+                <li>
+
+                    <h3>Statement: "If you trouble me, I will slap you." - A mother warns her child<br>
+                        <pre><b>Assumptions:</b>
+                        I. With the warning, the child may stop troubling her.
+                        II. All children are basically naughty.</pre>
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-2-answers" id="question-2-answers-A" value="A" />
+                        <label for="question-2-answers-A">A) Only assumption I is implicit</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-2-answers" id="question-2-answers-B" value="B" />
+                        <label for="question-2-answers-B">B) Only assumption II is implicit</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-2-answers" id="question-2-answers-C" value="C" />
+                        <label for="question-2-answers-C">C) Either I or II is implicit</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-2-answers" id="question-2-answers-D" value="D" />
+                        <label for="question-2-answers-D">D) Neither I nor II is implicit</label>
+                    </div>
+
+                </li>
+
+                <li>
+
+                    <h3>The cost price of 20 articles is the same as the selling price of x articles. If the profit is 25%, then the value of x is?</h3>
+
+                    <div>
+                        <input type="radio" name="question-3-answers" id="question-3-answers-A" value="A" />
+                        <label for="question-3-answers-A">A) 15</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-3-answers" id="question-3-answers-B" value="B" />
+                        <label for="question-3-answers-B">B) 16</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-3-answers" id="question-3-answers-C" value="C" />
+                        <label for="question-3-answers-C">C) 18</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-3-answers" id="question-3-answers-D" value="D" />
+                        <label for="question-3-answers-D">D) 25</label>
+                    </div>
+
+                </li>
+
+                <li>
+
+                    <h3>A can do a piece of work in 4 hours; B and C together can do it in 3 hours, while A and C together can do it in 2 hours. How long will B alone take to do it?</h3>
+
+                    <div>
+                        <input type="radio" name="question-4-answers" id="question-4-answers-A" value="A" />
+                        <label for="question-4-answers-A">A) 8 hours</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-4-answers" id="question-4-answers-B" value="B" />
+                        <label for="question-4-answers-B">B) 10 hours</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-4-answers" id="question-4-answers-C" value="C" />
+                        <label for="question-4-answers-C">C) 12 hours</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-4-answers" id="question-4-answers-D" value="D" />
+                        <label for="question-4-answers-D">D) 24 hours</label>
+                    </div>
+
+                </li>
+
+                <li>
+
+                    <h3>The average age of husband, wife and their child 3 years ago was 27 years and that of wife and the child 5 years ago was 20 years. The present age of the husband is:?
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-5-answers" id="question-5-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) 35 years</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-5-answers" id="question-5-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) 40 years</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-5-answers" id="question-5-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) 50 years</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-5-answers" id="question-5-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) None of these</label>
+                    </div>
+
+                </li>
+
+
+                 <li>
+
+                    <h3>The H.C.F. of two numbers is 11 and their L.C.M. is 7700. If one of the numbers is 275, then the other is
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-6-answers" id="question-6-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) 279</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-6-answers" id="question-6-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) 283</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-6-answers" id="question-6-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) 308</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-6-answers" id="question-6-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) 318</label>
+                    </div>
+
+                </li>
+
+                 <li>
+
+                    <h3>Pick out the most effective word(s) from the given
+words to fill in the blank to make the sentence
+meaningfully complete.:<br>
+Fate smiles ...... those who untiringly grapple with
+stark realities of life.
+ </h3>
+
+                    <div>
+                        <input type="radio" name="question-7-answers" id="question-7-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) with</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-7-answers" id="question-7-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) over</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-7-answers" id="question-7-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) on</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-7-answers" id="question-7-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) round</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>If January 1, 1996, was Monday, what day of the week was January 1, 1997?</h3>
+
+                    <div>
+                        <input type="radio" name="question-8-answers" id="question-8-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Thursday</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-8-answers" id="question-8-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) Wednesday</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-8-answers" id="question-8-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Friday</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-8-answers" id="question-8-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) Sunday</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3> 40 % of 280 =?</h3>
+
+                    <div>
+                        <input type="radio" name="question-9-answers" id="question-9-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) 112</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-9-answers" id="question-9-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) 116</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-9-answers" id="question-9-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) 115</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-9-answers" id="question-9-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) 120</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>A running man crosses a bridge of length 500 meters in 4 minutes. At what
+speed he is running?
+ </h3>
+
+                    <div>
+                        <input type="radio" name="question-10-answers" id="question-10-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) 8.5 km/s</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-10-answers" id="question-10-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) 7.5 km/s</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-10-answers" id="question-10-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) 9.5 km/s</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-10-answers" id="question-10-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) 6.5 km/s</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>If Suresh borrows Rs. 36000 from Mahesh at rate of interest 6% S.I, at the
+end of four years how much interest Suresh has to pay along with principal
+amount?
+ </h3>
+
+                    <div>
+                        <input type="radio" name="question-11-answers" id="question-11-answers-A" value="A" />
+                        <label for="question-5-answers-A">A)  Rs. 12560</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-11-answers" id="question-11-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) Rs. 12960</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-11-answers" id="question-11-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Rs. 13500</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-11-answers" id="question-11-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) Rs. 14500</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>In what ways the letters of the word &quot;RUMOUR&quot; can be arranged?</h3>
+
+                    <div>
+                        <input type="radio" name="question-12-answers" id="question-12-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) 180</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-12-answers" id="question-12-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) 150</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-12-answers" id="question-12-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) 200</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-12-answers" id="question-12-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) 230</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>Pointing to a photograph, a man said, &quot;I have no brother, and that man&#39;s
+father is my father&#39;s son.&quot; Whose photograph was it?
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-13-answers" id="question-13-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) His son</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-13-answers" id="question-13-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) His own</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-13-answers" id="question-13-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) His father</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-13-answers" id="question-13-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) His nephew</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>RQP, ONM, ____ , IHG, FED, find the missing letters.
+ </h3>
+
+                    <div>
+                        <input type="radio" name="question-14-answers" id="question-14-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) CDE</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-14-answers" id="question-14-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) LKI</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-14-answers" id="question-14-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) LKJ</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-14-answers" id="question-14-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) BAC</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>Find the missing letters in the series, BKK, DMM, FOO, ___, JSS.
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-15-answers" id="question-15-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) HLL</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-15-answers" id="question-15-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) HBB</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-15-answers" id="question-15-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) HTT</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-15-answers" id="question-15-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) HQQ</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3> Arrange the following words in a meaningful sequence.
+                        <pre>
+                            1. Cow
+                            2. Grass
+                            3. Milk
+                            4. Curd
+                            5. Butter
+                        </pre> </h3>
+
+                    <div>
+                        <input type="radio" name="question-16-answers" id="question-16-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) 1, 3, 2, 4, 5</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-16-answers" id="question-16-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) 4, 3, 5, 1, 2</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-16-answers" id="question-16-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) 3, 4, 5, 1, 2</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-16-answers" id="question-16-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) 1, 2, 3, 4, 5</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3> Choose the correct spelt word out of the given alternatives.
+                    </h3>
+
+                    <div>
+                        <input type="radio" name="question-17-answers" id="question-17-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Damage</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-17-answers" id="question-17-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) Dammege</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-17-answers" id="question-17-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Damaige</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-17-answers" id="question-17-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) Dammage</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3> Choose the correct spelt word out of the given alternatives.
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-18-answers" id="question-18-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Pasanger</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-18-answers" id="question-18-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) Passenger</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-18-answers" id="question-18-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Pessenger</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-18-answers" id="question-18-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) Pasanger</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>  _____ and discipline are the basic necessities of an organised society.
+                        <pre>
+                            (A) Peace
+                            (B) Harmony
+                            (C) Prosperity
+                            (D) Concord
+                        </pre>
+
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-19-answers" id="question-19-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) A and B</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-19-answers" id="question-19-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) B and D</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-19-answers" id="question-19-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) A and D</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-19-answers" id="question-19-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) C and D</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>It was true that
+                     <pre>
+                         (P) the pet dog
+                         (Q) would never sleep anywhere
+                         (R) we once had
+                         (S) except on the sofa
+                     </pre>
+ </h3>
+
+                    <div>
+                        <input type="radio" name="question-20-answers" id="question-20-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) RPQS</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-20-answers" id="question-20-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) SPQR</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-20-answers" id="question-20-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) PRQS</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-20-answers" id="question-20-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) PQSR</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>A train moving at speed of 80 km/hr crosses a pole in 7 seconds. Find the
+length of the train.
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-21-answers" id="question-21-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) 150 m</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-21-answers" id="question-21-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) 165 m</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-21-answers" id="question-21-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) 175 m</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-21-answers" id="question-21-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) 170 m</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3> A: B: C is in the ratio of 3: 2: 5. How much money will C get out of Rs 1260?
+
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-22-answers" id="question-22-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) 252</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-22-answers" id="question-22-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) 125</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-22-answers" id="question-22-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) 503</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-22-answers" id="question-22-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) None of these</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>Choose one of the following options that means the opposite of the given word; <b>Copious</b>
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-23-answers" id="question-23-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Reverse</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-23-answers" id="question-23-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) Scarce</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-23-answers" id="question-23-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Abundant</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-23-answers" id="question-23-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) Short</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>In how many ways can the letters of the word 'LEADER' be arranged? </h3>
+
+                    <div>
+                        <input type="radio" name="question-24-answers" id="question-24-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) 72</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-24-answers" id="question-24-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) 144</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-24-answers" id="question-24-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) 360</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-24-answers" id="question-24-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) 720</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3> synonyms of word <b>Brief</b>
+ </h3>
+
+                    <div>
+                        <input type="radio" name="question-25-answers" id="question-25-answers-A" value="A" />
+                        <label for="question-25-answers-A">A) Partial</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-25-answers" id="question-25-answers-B" value="B" />
+                        <label for="question-5-answers-B">B)  Short</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-25-answers" id="question-25-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Limited</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-25-answers" id="question-25-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) Little</label>
+                    </div>
+
+                </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </ol>
+
+
+</div>
+            <div id="tech">
+
+
+                    <h3></h3>
+
+                     <div>
+                        <input type="hidden"/>
+                        <label for="question-1-answers-D"></label>
+                    </div>
+
+                     <div>
+                        <input type="hidden"/>
+                        <label for="question-1-answers-D"></label>
+                    </div>
+
+                       <div>
+                        <input type="hidden"/>
+                        <label for="question-1-answers-D"></label>
+                    </div>
+
+                     <div>
+                        <input type="hidden"/>
+                        <label for="question-1-answers-D"></label>
+                    </div>
+
+
+
+                    <h3></h3>
+   <div>
+                        <input type="hidden"/>
+                        <label for="question-1-answers-D"></label>
+                    </div>
+
+                      <div>
+                        <input type="hidden"/>
+                        <label for="question-1-answers-D"></label>
+                    </div>
+   <div>
+                        <input type="hidden"/>
+                        <label for="question-1-answers-D"></label>
+                    </div>
+
+                    <div>
+                        <input type="hidden"/>
+                        <label for="question-1-answers-D"></label>
+                    </div>
+
+
+
+                     <center><h1>TECHNICAL TEST</h1></center>
+            <ol>
+
+                <li>
+
+                    <h3>How many specifiers are used to derive a class?</h3>
+
+                    <div>
+                        <input type="radio" name="question-26-answers" id="question-26-answers-A" value="A" />
+                        <label for="question-1-answers-A">A) 1 </label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-26-answers" id="question-26-answers-B" value="B" />
+                        <label for="question-1-answers-B">B) 2</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-26-answers" id="question-26-answers-C" value="C" />
+                        <label for="question-1-answers-C">C) 3</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-26-answers" id="question-26-answers-D" value="D" />
+                        <label for="question-1-answers-D">D) 4</label>
+                    </div>
+
+                </li>
+
+                <li>
+
+                    <h3>Which is the correct syntax of declaring a virtual function?</h3>
+
+                    <div>
+                        <input type="radio" name="question-27-answers" id="question-27-answers-A" value="A" />
+                        <label for="question-2-answers-A">A) virtual int func();</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-27-answers" id="question-27-answers-B" value="B" />
+                        <label for="question-2-answers-B">B) virtual int func(){};</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-27-answers" id="question-27-answers-C" value="C" />
+                        <label for="question-2-answers-C">C) inline virtual func();</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-27-answers" id="question-27-answers-D" value="D" />
+                        <label for="question-2-answers-D">D) inline virtual func(){};</label>
+                    </div>
+
+                </li>
+
+                <li>
+
+                    <h3>Which of the following can not be used as identifiers?</h3>
+
+                    <div>
+                        <input type="radio" name="question-28-answers" id="question-28-answers-A" value="A" />
+                        <label for="question-3-answers-A">A) Letters</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-28-answers" id="question-28-answers-B" value="B" />
+                        <label for="question-3-answers-B">B) Digits</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-28-answers" id="question-28-answers-C" value="C" />
+                        <label for="question-3-answers-C">C) Underscores</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-28-answers" id="question-28-answers-D" value="D" />
+                        <label for="question-3-answers-D">D) Spaces</label>
+                    </div>
+
+                </li>
+
+                <li>
+
+                    <h3>Default value of static variable is_____</h3>
+
+                    <div>
+                        <input type="radio" name="question-29-answers" id="question-29-answers-A" value="A" />
+                        <label for="question-4-answers-A">A) 1</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-29-answers" id="question-29-answers-B" value="B" />
+                        <label for="question-4-answers-B">B) 0</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-29-answers" id="question-29-answers-C" value="C" />
+                        <label for="question-4-answers-C">C) Garbage value</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-29-answers" id="question-29-answers-D" value="D" />
+                        <label for="question-4-answers-D">D) Compiler dependent</label>
+                    </div>
+
+                </li>
+
+                <li>
+
+                    <h3>The process of building new classes from existing one is called
+
+
+                        </h3>
+
+                    <div>
+                        <input type="radio" name="question-30-answers" id="question-30-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Structure
+                        </label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-30-answers" id="question-30-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) Inheritance </label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-30-answers" id="question-30-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) polymorphism</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-30-answers" id="question-30-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) Template</label>
+                    </div>
+
+                </li>
+
+
+                 <li>
+
+                    <h3>The operator that cannot be overloaded is </h3>
+
+                    <div>
+                        <input type="radio" name="question-31-answers" id="question-31-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) ++</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-31-answers" id="question-31-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) ::</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-31-answers" id="question-31-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) ()</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-31-answers" id="question-31-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) ~</label>
+                    </div>
+
+                </li>
+
+                 <li>
+
+                    <h3>Additional information sent when an exception is thrown may be placed in</h3>
+
+                    <div>
+                        <input type="radio" name="question-32-answers" id="question-32-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) the throw keyword.</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-32-answers" id="question-32-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) the function that caused the error.</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-32-answers" id="question-32-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) the catch block.</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-32-answers" id="question-32-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) an object of the exception class.</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>What will be the output of the below program?
+                            <pre>
+                                #include<>
+                            	main()
+                            	{
+                            	    char x[]="javaTpoint", y[]="javaTpoint";
+                            	    if(x==y){
+                            	     printf("Strings are Equal");
+                            	    }
+                                }
+                            </pre>
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-33-answers" id="question-33-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Strings are Equal</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-33-answers" id="question-33-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) No output</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-33-answers" id="question-33-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Runtime error</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-33-answers" id="question-33-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) Compilation error</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>What value would be stored in an integer variable “i” as a result of the following
+expression?
+                        <pre>int i, j = 3; i = 4 + 2 * j/(j-1);</pre>
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-34-answers" id="question-34-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) 1</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-34-answers" id="question-34-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) 8</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-34-answers" id="question-34-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) 9</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-34-answers" id="question-34-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) 7</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3> What is the output of the following program?
+                            <pre>
+                                #include&lt;stdio.h&gt;
+                                int c [10]={1,2,3,4,5,6,7,8,9,10};
+                                main ()
+                                { int a,b=0;
+                                for(a=0;a&lt;10;++a)
+                                if(c[a]%2= =1)
+                                b+=c[a];
+                                printf (‘%d”, b);}
+                            </pre>
+                            </h3>
+
+                    <div>
+                        <input type="radio" name="question-35-answers" id="question-35-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) 20</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-35-answers" id="question-35-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) 24</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-35-answers" id="question-35-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) 25</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-35-answers" id="question-35-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) 30</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>Inline functions may not work ______
+                    <pre>
+                        1. If function contain static variables
+                        2. If function contain global and register variables
+                        3. If function returning value consists looping construct(i.e. for, while)
+                        4. If inline functions are recursive
+                        5. If function contains const value
+                    </pre>
+
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-36-answers" id="question-36-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Only 1,4,5</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-36-answers" id="question-36-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) Only 2,3,5</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-36-answers" id="question-36-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Only 1,3,4</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-36-answers" id="question-36-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) All of these</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>When a class is defined inside any function or block, it is called_____________
+
+
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-37-answers" id="question-37-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Nested class</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-37-answers" id="question-37-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) Block class</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-37-answers" id="question-37-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Local class</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-37-answers" id="question-37-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) It is not possible</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>The following SQL is which type of join: SELECT CUSTOMER_T. CUSTOMER_ID, ORDER_T. CUSTOMER_ID, NAME, ORDER_ID FROM CUSTOMER_T,ORDER_T?</h3>
+
+                    <div>
+                        <input type="radio" name="question-38-answers" id="question-38-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Equi-join</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-38-answers" id="question-38-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) Natural join</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-38-answers" id="question-38-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Outer join</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-38-answers" id="question-38-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) Cartesian join</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>Which of the following is / are DML Statements? </h3>
+
+                    <div>
+                        <input type="radio" name="question-39-answers" id="question-39-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Insert</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-39-answers" id="question-39-answers-B" value="B" />
+                        <label for="question-5-answers-B">B)  Update</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-39-answers" id="question-39-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Create</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-39-answers" id="question-39-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) Both A and B</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3> TRUNCATE statement in SQL is a –</h3>
+
+                    <div>
+                        <input type="radio" name="question-40-answers" id="question-40-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) DML statement</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-40-answers" id="question-40-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) DDL statement</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-40-answers" id="question-40-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) DCL statement</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-40-answers" id="question-40-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) TCL statement</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>A type of query that is placed within a WHERE or HAVING clause of another query is called
+                    </h3>
+
+                    <div>
+                        <input type="radio" name="question-41-answers" id="question-41-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Master query</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-41-answers" id="question-41-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) Sub query</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-41-answers" id="question-41-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Super query</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-41-answers" id="question-41-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) Multi-query</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>Which of the following columns in a table cannot be updated? </h3>
+
+                    <div>
+                        <input type="radio" name="question-42-answers" id="question-42-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) DATE type columns in the table</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-42-answers" id="question-42-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) A primary key column which also serves as foreign key reference in another table</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-42-answers" id="question-42-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Columns which allows NULL values in the table</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-42-answers" id="question-42-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) All of the above</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3> Select the sequence for how the query mechanism works?</h3>
+
+                    <div>
+                        <input type="radio" name="question-43-answers" id="question-43-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Authentication-> DDL->DML->query optimizer->output</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-43-answers" id="question-43-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) DDL->DML->query optimizer-> Authentication->output</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-43-answers" id="question-43-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) DML->query optimizer-> Authentication-> DDL-> output</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-43-answers" id="question-43-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) All of the mentioned</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>Which statement(S) is/are incorrect
+
+                    </h3>
+
+                    <div>
+                        <input type="radio" name="question-44-answers" id="question-44-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Stored procedure may return a value and function must return a value.</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-44-answers" id="question-44-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) Function has only IN parameter.</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-44-answers" id="question-44-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) Try and Catch can be used with both stored procedure and function.
+</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-44-answers" id="question-44-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) Stored procedure has IN and OUT parameter.</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>Wrong statement about ORDER BY keyword is
+
+
+
+
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-45-answers" id="question-45-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) Used to sort the result-set in ascending or descending order</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-45-answers" id="question-45-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) The ORDER BY keyword sorts the records in ascending order by default.</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-45-answers" id="question-45-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) To sort the records in ascending order, use the ASC keyword.</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-45-answers" id="question-45-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) To sort the records in descending order, use the DECENDING keyword.</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>Inside which HTML element do we put the JavaScript?
+
+                    </h3>
+
+                    <div>
+                        <input type="radio" name="question-46-answers" id="question-46-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) < javascript></label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-46-answers" id="question-46-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) < script></label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-46-answers" id="question-46-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) < js></label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-46-answers" id="question-46-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) < scripttype></label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>Which of the following is NOT a valid Alert call?
+                    </h3>
+
+                    <div>
+                        <input type="radio" name="question-47-answers" id="question-47-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) alert('A');</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-47-answers" id="question-47-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) alert(a);</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-47-answers" id="question-47-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) alert(a+b);</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-47-answers" id="question-47-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) alert(#);</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>What types of value can a function return?
+
+
+
+
+
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-48-answers" id="question-48-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) text</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-48-answers" id="question-48-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) true/false</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-48-answers" id="question-48-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) any variable or object</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-48-answers" id="question-48-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) numbers</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3> Which is the correct CSS syntax?
+                    </h3>
+
+                    <div>
+                        <input type="radio" name="question-49-answers" id="question-49-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) body:color=black</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-49-answers" id="question-49-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) {body;color:black}</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-49-answers" id="question-49-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) {body:color=black(body}</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-49-answers" id="question-49-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) body {color: black}</label>
+                    </div>
+
+                </li>
+                 <li>
+
+                    <h3>What is the correct HTML for creating a hyperlink?
+
+
+
+
+</h3>
+
+                    <div>
+                        <input type="radio" name="question-50-answers" id="question-50-answers-A" value="A" />
+                        <label for="question-5-answers-A">A) < a>B< /a></label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-50-answers" id="question-50-answers-B" value="B" />
+                        <label for="question-5-answers-B">B) < a name="">A< /a></label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-50-answers" id="question-50-answers-C" value="C" />
+                        <label for="question-5-answers-C">C) < a href="http://www.example.com">example< /a></label>
+                    </div>
+
+                    <div>
+                        <input type="radio" name="question-50-answers" id="question-50-answers-D" value="D" />
+                        <label for="question-5-answers-D">D) < a url="http://www.example.com">example< /a></label>
+                    </div>
+
+                </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </ol>
+            </div>
+
+  <button type="submit" class="btn btn-success">
+<div style=" font-size: 200%;">SUBMIT TEST</div></button>
+
+
+		</form>
+
+</div>
+ </div>
+   </div>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+<script>
+
+function colselect()
+{
+   var uco = document.getElementById("cole");
+
+if(uco.value == "Default")
+{
+   document.reg.cole.focus();
+alert('Select College : Select your college from the list');
+return false;
+}
+else
+{
+return true;
+}
+}
+
+function allLetter()
+  {
+   var inputtxt = document.getElementById("sname");
+   var letters = /^[A-Za-z ]+$/;
+   if(inputtxt.value.match(letters))
+     {
+      return true;
+     }
+   else
+     {
+     document.reg.sname.focus();
+     alert("Username : Please input alphabet characters only");
+     return false;
+     }
+  }
+
+
+
+
+function allnumeric()
+   {
+      var inputtxt = document.getElementById("contact");
+      var numbers = /^[0-9]+$/;
+       if(inputtx>=0 && inputtx<=10)
+      {
+      if(inputtxt.value.match(numbers))
+      {
+      return true;
+      }
+      else
+      {
+        document.reg.contact.focus();
+      alert('Mobile Number : Please input numeric characters only');
+
+      return false;
+      }
+      }
+        else
+      {
+       alert('Mobile Number : Incorrect');
+        return false;
+      }
+   }
+
+
+
+function sub()
+{
+    document.getElementById("quiz").submit();
+}
+
+
+
+window.setInterval(function(){
+    document.getElementById("quiz").submit();
+	//alert("colplete");
+}, 3600000);
+
+
+if(localStorage.getItem("total_seconds")){
+    var total_seconds = localStorage.getItem("total_seconds");
+} else {
+    var total_seconds = 60*3;
+}
+			//var total_seconds = 60*5 ;
+			var minutes = parseInt(total_seconds/60);
+			var seconds = parseInt(total_seconds%60);
+			function countDownTimer(){
+				if(seconds < 10){
+					seconds= "0"+ seconds ;
+				}if(minutes < 10){
+					minutes= "0"+ minutes ;
+				}
+
+			document.getElementById("quiz-time-left").innerHTML
+				= "Time Left : "+minutes+"  Min  "+seconds+"  Sec";
+				if(total_seconds <= 0){
+					setTimeout("document.quiz.submit()",1);
+				}else{
+					total_seconds = total_seconds -1 ;
+					minutes = parseInt(total_seconds/60);
+		            seconds = parseInt(total_seconds%60);
+		            setTimeout("countDownTimer()",1000);
+					localStorage.setItem("total_seconds",total_seconds)
+
+				}
+			}
+		setTimeout("countDownTimer()",1000);
+
+
+/* function finishpage(){
+alert("unload event detected!");
+document.quiz.submit();
+}
+
+window.onbeforeunload= function() {
+setTimeout('document.quiz.submit()',1);
+}*/
+
+
+
+
+
+/*function countdown(minutes) {
+    var seconds = 60;
+    var mins = minutes
+    function tick() {
+
+        //This script expects an element with an ID = "counter". You can change that to what ever you want.
+        var counter = document.getElementById("counter");
+        var current_minutes = mins-1
+        seconds--;
+        counter.innerHTML = current_minutes.toString()+" Min " + "  :  " + (seconds < 10 ? "0" : "") + String(seconds)+" Sec";
+
+
+		if( seconds > 0 )
+		{
+            setTimeout(tick, 1000);
+        }
+		else
+		{
+            if(mins > 1)
+			{
+                countdown(mins-1);
+            }
+        }
+    }
+
+    tick();
+	//alert("complet");
+}
+//You can use this script with a call to onclick, onblur or any other attribute you would like to use.
+countdown(60);//where n is the number of minutes required.
+
+
+*/
+</script>
+
+
+<script>
+window.onscroll = function() {myFunction()};
+
+var head = document.getElementById("myHeader");
+var sticky = head.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset > sticky) {
+    head.classList.add("sticky");
+  } else {
+    head.classList.remove("sticky");
+  }
+}
+
+
+</script>
+
+
+
+</body>
+</html>

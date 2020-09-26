@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form name="reg" action="{% url 'data' %}" method="POST" style="max-width:500px;margin:auto">
+  {% csrf_token %}
+    <div class="input-container">
+    <i class="fa-id-card icon"></i>
+    <input class="input-field" type="text" placeholder="Adhar No." name="AD" id="roll"  required>
+  </div>
+<div class="input-container">
+    <i class="fa fa-mobile icon"></i>
+    <input class="input-field" type="text" placeholder="Roll No." name="RN" id="contact" required>
+  </div>
+
+
+  <button type="submit" class="btn">Sign Up</button>
+</form>
+
+</body>
+</html>
