@@ -18,8 +18,7 @@ Including another URLconf
     https://www.youtube.com/watch?v=zXmUidfg27c&list=PLlFwzkUNmr9693sWzvIjJd2PppnJlCq2z&index=9
 """
 from django.contrib import admin
-from django.urls import path, include
-
+from django.urls import include , path
 from Q import views
 
 urlpatterns = [

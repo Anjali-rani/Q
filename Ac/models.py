@@ -11,12 +11,12 @@ class extendeduser(models.Model):
 
 
 class Quize(models.Model):
-    Roll_No=models.IntegerField(max_length=100)
+    Roll_No=models.IntegerField()
     Fullname=models.CharField(max_length=255)
     College=models.CharField(max_length=255)
     Mobile=models.CharField(max_length=15)
     TotalMarks=models.CharField(max_length=100)
-    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    user=models.OneToOneField(User,on_delete=models.CASCADE,)
 
     def __str__(self):
         return self.Fullname
